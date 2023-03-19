@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.KnowledgeOnlineledgeMapper">
+    
+    <resultMap type="KnowledgeOnlineledge" id="KnowledgeOnlineledgeResult">
+        <result property="linkId"    column="link_id"    />
+        <result property="linkName"    column="link_name"    />
+        <result property="linkAddress"    column="link_address"    />
+        <result property="belongGroup"    column="belong_group"    />
+        <result property="belongLabel"    column="belong_label"    />
+        <result property="createUserid"    column="create_userid"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateUserid"    column="update_userid"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="isBorrow"    column="is_borrow"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectKnowledgeOnlineledgeVo">
+        select link_id, link_name, link_address, belong_group, belong_label, create_userid, create_time, update_userid, update_time, is_borrow, remark from knowledge_onlineledge
+    </sql>
+
+    <select id="selectKnowledgeOnlineledgeList" parameterType="KnowledgeOnlineledge" resultMap="KnowledgeOnlineledgeResult">
+        <include refid="selectKnowledgeOnlineledgeVo"/>
+        <where>  
+            <if test="linkName != null  and linkName != ''"> and link_name like concat('%', #{linkName}, '%')</if>
+            <if test="belongGroup != null  and belongGroup != ''"> and belong_group = #{belongGroup}</if>
+            <if test="belongLabel != null  and belongLabel != ''"> and belong_label = #{belongLabel}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="updateTime != null "> and update_time = #{updateTime}</if>
+            <if test="isBorrow != null "> and is_borrow = #{isBorrow}</if>
+        </where>
+    </select>
+    
+    <select id="selectKnowledgeOnlineledgeByLinkId" parameterType="Long" resultMap="KnowledgeOnlineledgeResult">
+        <include refid="selectKnowledgeOnlineledgeVo"/>
+        where link_id = #{linkId}
+    </select>
+        
+    <insert id="insertKnowledgeOnlineledge" parameterType="KnowledgeOnlineledge" useGeneratedKeys="true" keyProperty="linkId">
+        insert into knowledge_onlineledge
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="linkName != null and linkName != ''">link_name,</if>
+            <if test="linkAddress != null and linkAddress != ''">link_address,</if>
+            <if test="belongGroup != null and belongGroup != ''">belong_group,</if>
+            <if test="belongLabel != null and belongLabel != ''">belong_label,</if>
+            <if test="createUserid != null">create_userid,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateUserid != null">update_userid,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="isBorrow != null">is_borrow,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="linkName != null and linkName != ''">#{linkName},</if>
+            <if test="linkAddress != null and linkAddress != ''">#{linkAddress},</if>
+            <if test="belongGroup != null and belongGroup != ''">#{belongGroup},</if>
+            <if test="belongLabel != null and belongLabel != ''">#{belongLabel},</if>
+            <if test="createUserid != null">#{createUserid},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateUserid != null">#{updateUserid},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="isBorrow != null">#{isBorrow},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateKnowledgeOnlineledge" parameterType="KnowledgeOnlineledge">
+        update knowledge_onlineledge
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="linkName != null and linkName != ''">link_name = #{linkName},</if>
+            <if test="linkAddress != null and linkAddress != ''">link_address = #{linkAddress},</if>
+            <if test="belongGroup != null and belongGroup != ''">belong_group = #{belongGroup},</if>
+            <if test="belongLabel != null and belongLabel != ''">belong_label = #{belongLabel},</if>
+            <if test="createUserid != null">create_userid = #{createUserid},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateUserid != null">update_userid = #{updateUserid},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="isBorrow != null">is_borrow = #{isBorrow},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where link_id = #{linkId}
+    </update>
+
+    <delete id="deleteKnowledgeOnlineledgeByLinkId" parameterType="Long">
+        delete from knowledge_onlineledge where link_id = #{linkId}
+    </delete>
+
+    <delete id="deleteKnowledgeOnlineledgeByLinkIds" parameterType="String">
+        delete from knowledge_onlineledge where link_id in 
+        <foreach item="linkId" collection="array" open="(" separator="," close=")">
+            #{linkId}
+        </foreach>
+    </delete>
+</mapper>
